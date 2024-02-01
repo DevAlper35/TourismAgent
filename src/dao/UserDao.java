@@ -71,7 +71,28 @@ public class UserDao {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        return false;
+        return true;
+    }
+    public boolean update(User user) { // Update İşlemi
+        String query = "UPDATE public.user " +
+                "SET user_name = ? ," +
+                " user_pass = ? ," +
+                " user_role = ? " +
+                "WHERE user_Id = ? ";
+        try {
+            PreparedStatement pr = con.prepareStatement(query);
+
+            pr.setString(1, user.getUsername());
+            pr.setString(2, user.getPassword());
+            pr.setString(3, user.getRole());
+            pr.setInt(4, user.getId());
+
+            return pr.executeUpdate() != -1;
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return true;
     }
 
     public boolean delete(int model_id){

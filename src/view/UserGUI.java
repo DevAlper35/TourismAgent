@@ -1,6 +1,7 @@
 package view;
 
 import business.UserManager;
+import core.ComboItem;
 import core.Helper;
 import entity.User;
 
@@ -17,38 +18,46 @@ public class UserGUI extends Layout{
     private User user;
     private UserManager userManager;
 
-    public UserGUI(){
+    public UserGUI(User user){
         this.add(wrapper);
 
         this.guiInitilaze(400,450);
         this.user = user;
         this.userManager = new UserManager();
-        btn_add.addActionListener(e -> {
-            entity.User user = new User();
+        if(this.user.getId() != 0){
+            this.tf_username.setText(this.user.getUsername());
+            this.tf_pass.setText(this.user.getPassword());
+            this.cmb_user_role.setSelectedItem(this.user.getRole());
+        }
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        btn_add.addActionListener(e -> {
+
                 if (Helper.isFieldListEmpty(new JTextField[]{tf_username, tf_pass})) {
                     Helper.showMsg("fill");
                 } else {
                     boolean result;
 
-                    //       ComboItem selectedRole = (ComboItem) cmb_user_role.getSelectedItem();
                     this.user.setUsername(tf_username.getText());
                     this.user.setPassword(tf_pass.getText());
                     this.user.setRole((String) cmb_user_role.getSelectedItem());
 
+                    if(this.user.getId() != 0){
+                        result = userManager.update(this.user);
 
-                    result = userManager.save(this.user);
+                    }
+                    else{
+                        result = userManager.save(this.user);
+                    }
+
 
                     if (result) {
                         Helper.showMsg("done");
-                        loadUserTable();
+                        //loadUserTable();
                     } else {
                         Helper.showMsg("error");
-
                     }
                 }
-        }
+
+        });
     }
 }

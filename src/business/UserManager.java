@@ -45,6 +45,13 @@ public class UserManager {
         }
         return this.userDao.save(user);
     }
+    public boolean update(User user) {
+        if (this.getById(user.getId()) == null) {
+            Helper.showMsg(user.getId() + " id kayıtlı kullanıcı bulunamadı");
+            return false;
+        }
+        return this.userDao.update(user);
+    }
 
     public User getById(int id) {
         return this.userDao.getByID(id);

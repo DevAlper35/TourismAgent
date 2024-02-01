@@ -1,6 +1,6 @@
 package view;
 
-import business.UserManager;
+import business.*;
 import core.ComboItem;
 import core.Helper;
 import entity.User;
@@ -120,7 +120,7 @@ public class AdminGUI extends Layout {
         this.userMenu = new JPopupMenu();
         this.userMenu.add("Yeni").addActionListener(e -> {
 
-            UserGUI usergui = new UserGUI();
+            UserGUI usergui = new UserGUI(new User());
             usergui.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosed(WindowEvent e) {
@@ -131,10 +131,10 @@ public class AdminGUI extends Layout {
 
         });
         this.userMenu.add("Güncelle").addActionListener(e -> {
-
+            //UserGUI usergui = new UserGUI(new User());
             int selectModelId = this.getTableSelectedRow(tbl_user, 0);
-            UserGUI usergui = new UserGUI(this.UserManager.getById(selectModelId));
-            UserGUI.addWindowListener(new WindowAdapter() {
+            UserGUI usergui = new UserGUI(this.userManager.getById(selectModelId));
+            usergui.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosed(WindowEvent e) {
                     loadUserTable();
@@ -146,8 +146,8 @@ public class AdminGUI extends Layout {
         this.userMenu.add("Sil").addActionListener(e -> {
 
             if (Helper.confirm("sure")) {
-                int selectCarId = this.getTableSelectedRow(tbl_user, 0);
-                if (this.UserManager.delete(selectCarId)) {
+                int selectId = this.getTableSelectedRow(tbl_user, 0);
+                if (userManager.delete(selectId)) {
                     Helper.showMsg("done");
                     loadUserTable();
                 } else {
