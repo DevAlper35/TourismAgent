@@ -1,6 +1,6 @@
 package view;
 
-import business.*;
+import business.UserManager;
 import core.ComboItem;
 import core.Helper;
 import entity.User;
@@ -10,6 +10,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.*;
 import java.util.ArrayList;
+
 
 public class AdminGUI extends Layout {
 
@@ -22,22 +23,27 @@ public class AdminGUI extends Layout {
     private JTextField tf_pass;
     private JComboBox<ComboItem> cmb_user_role;
     private JButton btn_add;
-    private JTextField tf_id;
     private JButton DELETEButton;
-    private JComboBox comboBox1;
-    private JButton SEARCHButton;
+    private JComboBox cmb_users;
+    private JButton btn_search_user;
     private JScrollPane scrl_user;
+    private JButton btn_new_user;
+    private JButton btn_clear_user;
     private JPanel w_top;
     private JPanel w_bot;
     private User user;
     private UserManager userManager;
     private DefaultTableModel tmdl_user = new DefaultTableModel();
-    private JPopupMenu userMenu;
+    private Object[] col_user ;
+    private JPopupMenu user_menu;
+
+
 
     public AdminGUI(User user) {
+        this.col_user = col_user;
         this.userManager = new UserManager();
         this.add(wrapper);
-        this.guiInitilaze(1000, 500);
+        this.guiInitilaze(1000, 400);
         this.user = user;
         if (user == null) {
             dispose();
@@ -45,9 +51,10 @@ public class AdminGUI extends Layout {
 
 
         this.lbl_welcome.setText("Hoşgeldiniz : " + this.user.getUsername());
-        loadUserTable();
+
+        loadUserTable(null);
         tableRowSelect(tbl_user);
-        loadUserComponent();
+
         LOGOUTButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -57,7 +64,7 @@ public class AdminGUI extends Layout {
         });
 
         btn_add.addActionListener(new ActionListener() {
-            User user = new User();
+
 
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -65,18 +72,27 @@ public class AdminGUI extends Layout {
                     Helper.showMsg("fill");
                 } else {
                     boolean result;
+                    User user1 = new User();
+                    if (getUserUpdated() != null){
+                        user1 = getUserUpdated();
+                    }
 
-                    //       ComboItem selectedRole = (ComboItem) cmb_user_role.getSelectedItem();
-                    this.user.setUsername(tf_username.getText());
-                    this.user.setPassword(tf_pass.getText());
-                    this.user.setRole((String) cmb_user_role.getSelectedItem());
 
+                    user1.setUsername(tf_username.getText());
+                    user1.setPassword(tf_pass.getText());
+                    user1.setRole((String) cmb_user_role.getSelectedItem());
 
-                    result = userManager.save(this.user);
+                    if (btn_add.getText().equals("UPDATE")){
+                        result = userManager.update(user1);
+
+                    }else{
+                        result = userManager.save(user1);
+                    }
+
 
                     if (result) {
                         Helper.showMsg("done");
-                        loadUserTable();
+                        loadUserTable(null);
                     } else {
                         Helper.showMsg("error");
 
@@ -89,74 +105,83 @@ public class AdminGUI extends Layout {
             public void actionPerformed(ActionEvent e) {
                 if(Helper.confirm("sure")){
 
-                    int selectModelId = getTableSelectedRow(tbl_user,0);
-                    if (userManager.delete(selectModelId)){
+                    int selectUserId = getTableSelectedRow(tbl_user,0);
+                    if (userManager.delete(selectUserId)){
                         Helper.showMsg("done");
-                        loadUserTable();
+                        loadUserTable(null);
                     }else{
                         Helper.showMsg("error");
                     }
                 }
             }
         });
+        btn_search_user.addActionListener(e -> {
+            String selectedUser= (String) this.cmb_users.getSelectedItem();
+            ArrayList<User> userListBySearch=this.userManager.searchForTable(selectedUser);
+            ArrayList<Object[]> userRowListBySearch=this.userManager.getForTable(col_user.length,userListBySearch);
+            loadUserTable(userRowListBySearch);
+
+        });
+        tableRowSelect(tbl_user);
+
+        this.btn_new_user.addActionListener(e -> {
+            this.tf_username.setText(null);
+            this.tf_pass.setText(null);
+            this.cmb_user_role.setSelectedItem("ADMIN");
+            this.btn_add.setText("ADD");
+            setUserUpdated(null);
+
+        });
+
+//
+        this.user_menu = new JPopupMenu();
+        this.user_menu.add("Güncelle").addActionListener(e -> {
+            int selectUserId = this.getTableSelectedRow(tbl_user,0);
+            User userUpdate = this.userManager.getById(selectUserId);
+            this.tf_username.setText(userUpdate.getUsername());
+            this.tf_pass.setText(userUpdate.getPassword());
+            this.cmb_user_role.setSelectedItem(userUpdate.getRole());
+            this.btn_add.setText("UPDATE");
+            setUserUpdated(userUpdate);
+        });
+        tbl_user.setComponentPopupMenu(user_menu);
+        btn_clear_user.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cmb_users.setSelectedItem(null); // Comboboxdaki seçeneği boş bırakır
+                loadUserTable(null); // Filtrelemeyi iptal eder
+            }
+        });
     }
 
-    public void loadUserTable() {
-        Object[] col_user = {"ID", "Username", "Password", "Role"};
-        ArrayList<Object[]> userList = this.userManager.getForTable(col_user.length, this.userManager.findAll());
-        createTable(this.tmdl_user, tbl_user, col_user, userList);
+    public void loadUserTable(ArrayList<Object[]> userList) {
+
+        this.col_user = new Object[] {"ID", "Username", "Password", "Role"};
+        if(userList==null){
+            userList=this.userManager.getForTable(this.col_user.length,this.userManager.findAll());
+        }
+        createTable(this.tmdl_user,this.tbl_user,col_user,userList);
+
     }
     public void tableRowSelect(JTable table){
         table.addMouseListener(new MouseAdapter() {
+
+
             @Override
             public void mouseReleased(MouseEvent e) {
                 int selected_row = table.rowAtPoint(e.getPoint());
-                table.setRowSelectionInterval(selected_row, selected_row);
+                table.setRowSelectionInterval(selected_row,selected_row);
             }
         });
     }
-    private void loadUserComponent() {
-        tableRowSelect(this.tbl_user);
-        this.userMenu = new JPopupMenu();
-        this.userMenu.add("Yeni").addActionListener(e -> {
 
-            UserGUI usergui = new UserGUI(new User());
-            usergui.addWindowListener(new WindowAdapter() {
-                @Override
-                public void windowClosed(WindowEvent e) {
-                    loadUserTable();
-                }
-            });
-
-
-        });
-        this.userMenu.add("Güncelle").addActionListener(e -> {
-            //UserGUI usergui = new UserGUI(new User());
-            int selectModelId = this.getTableSelectedRow(tbl_user, 0);
-            UserGUI usergui = new UserGUI(this.userManager.getById(selectModelId));
-            usergui.addWindowListener(new WindowAdapter() {
-                @Override
-                public void windowClosed(WindowEvent e) {
-                    loadUserTable();
-                }
-            });
-
-
-        });
-        this.userMenu.add("Sil").addActionListener(e -> {
-
-            if (Helper.confirm("sure")) {
-                int selectId = this.getTableSelectedRow(tbl_user, 0);
-                if (userManager.delete(selectId)) {
-                    Helper.showMsg("done");
-                    loadUserTable();
-                } else {
-                    Helper.showMsg("error");
-                }
-            }
-
-
-        });
-        this.tbl_user.setComponentPopupMenu(userMenu);
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
+    }
+    private User getUserUpdated (){
+        return user;
+    }
+    private void setUserUpdated (User user){
+        this.user = user;
     }
 }

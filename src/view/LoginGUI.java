@@ -5,8 +5,6 @@ import core.Helper;
 import entity.User;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class LoginGUI extends Layout{
     private JPanel wrapper;
@@ -21,7 +19,7 @@ public class LoginGUI extends Layout{
 
     public LoginGUI(){
         this.add(wrapper);
-        this.guiInitilaze(400,450);
+        this.guiInitilaze(400,400);
         this.userManager = new UserManager();
 
 
@@ -42,7 +40,6 @@ public class LoginGUI extends Layout{
                         dispose();
                     }else {
                         EmployeeGUI employeeGUI = new EmployeeGUI(loginUser);
-                        System.out.printf("BU employee sayfasıdır.");
                         dispose();
                     }
                 }

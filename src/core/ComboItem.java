@@ -8,6 +8,9 @@ public class ComboItem {
         this.key = key;
         this.value = value;
     }
+    public ComboItem(){
+
+    }
 
     public int getKey() {
         return key;

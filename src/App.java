@@ -1,7 +1,7 @@
 import core.Helper;
 import view.LoginGUI;
 
-public class Main {
+public class App {
     public static void main(String[] args) {
         Helper.setTheme();
         LoginGUI loginGUI = new LoginGUI();
