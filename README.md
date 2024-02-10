@@ -19,4 +19,4 @@ Employee olarak giriş yapan kullanıcılar ayrıca;
 * belirtilen tarih aralığında odanın müsaitlik durumunu
 * odada konuklayacak kişi sayısını denetler. 
 
-3. Projenin kullanımı ile ilgili detayları [tanıtım linki](https://www.youtube.com/watch?v=MKta9QmLAqo&t=12s&ab_channel=AlperMudurlu)  üzerinden inceleyebilirsiniz.
+3. Projenin kullanımı ile ilgili detayları [tanıtım linki](https://youtu.be/MKta9QmLAqo?si=js2svj0kG8L5JR06)  üzerinden inceleyebilirsiniz.
