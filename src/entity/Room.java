@@ -1,5 +1,8 @@
 package entity;
 
+import business.HotelManager;
+import business.PensionManager;
+
 public class Room {
     private int id;
     private int hotel_id;
@@ -16,11 +19,12 @@ public class Room {
     private boolean game_console;
     private boolean cash_box;
     private boolean projection;
+    private boolean gym;
 
     public Room() {
     }
 
-    public Room(int id, int hotel_id, int pension_id, int season_id, String type, int stock, double adult_price, double child_price, int bed_capacity, int square_meter, boolean television, boolean minibar, boolean game_console, boolean cash_box, boolean projection) {
+    public Room(int id, int hotel_id, int pension_id, int season_id, String type, int stock, double adult_price, double child_price, int bed_capacity, int square_meter, boolean television, boolean minibar, boolean game_console, boolean cash_box, boolean projection,boolean gym) {
         this.id = id;
         this.hotel_id = hotel_id;
         this.pension_id = pension_id;
@@ -36,6 +40,15 @@ public class Room {
         this.game_console = game_console;
         this.cash_box = cash_box;
         this.projection = projection;
+        this.gym = gym;
+    }
+
+    public boolean isGym() {
+        return gym;
+    }
+
+    public void setGym(boolean gym) {
+        this.gym = gym;
     }
 
     public int getId() {
@@ -82,8 +95,9 @@ public class Room {
         return stock;
     }
 
-    public void setStock(int stock) {
+    public int setStock(int stock) {
         this.stock = stock;
+        return stock;
     }
 
     public double getAdult_price() {
@@ -177,5 +191,13 @@ public class Room {
                 ", cash_box=" + cash_box +
                 ", projection=" + projection +
                 '}';
+    }
+    public Hotel getHotel() {
+        HotelManager hotelManager = new HotelManager();
+        return hotelManager.getById(hotel_id);
+    }
+    public Pension getPension() {
+        PensionManager pensionManager=new PensionManager();
+        return pensionManager.getById(this.pension_id);
     }
 }

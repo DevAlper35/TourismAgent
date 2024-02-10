@@ -7,9 +7,9 @@ import java.sql.SQLException;
 public class Database {
     private static Database instance = null;
     private Connection connection = null;
-    private final String DB_URL = "jdbc:postgresql://localhost:5432/touragent";
+    private final String DB_URL = "jdbc:postgresql://localhost:5432/turism";
     private final String DB_USER = "postgres";
-    private final String DB_PASS = "323695";
+    private final String DB_PASS = "cozan";
 
     private Database () {
         try {

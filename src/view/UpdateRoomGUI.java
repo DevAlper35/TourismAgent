@@ -35,6 +35,7 @@ public class UpdateRoomGUI extends Layout {
     private SeasonManager seasonManager;
     private PensionManager pensionManager;
     private ComboItem comboItem;
+    private EmployeeGUI employeeGUI = new EmployeeGUI();
     private Hotel hotel;
     private Room room;
     private Season season;
@@ -56,22 +57,66 @@ public class UpdateRoomGUI extends Layout {
             this.cmb_room_add_hotel.addItem(hotel.getComboItem());
         }
 
+        btn_save_add_room_menu.addActionListener(e -> {
 
 
-            cmb_room_add_hotel.addActionListener(new ActionListener() {
+            JTextField[] selectedRoomList = new JTextField[]{tf_adult_price, tf_child_price, tf_bed_capacity, tf_bed_capacity, tf_square_meter};
+
+            if (Helper.isFieldListEmpty(selectedRoomList)) {
+                Helper.showMsg("fill");
+            } else {
+
+            }
+            boolean result;
+
+            int roomId = room.getId();
+
+            ComboItem selectedHotel = (ComboItem) cmb_room_add_hotel.getSelectedItem();
+            ComboItem selectedPension = (ComboItem) cmb_pension_add.getSelectedItem();
+            ComboItem selectedSeason = (ComboItem) cmb_season_add.getSelectedItem();
+            this.room.setSeason_id(selectedSeason.getKey());
+            this.room.setPension_id(selectedPension.getKey());
+            this.room.setHotel_id(selectedHotel.getKey());
+            this.room.setType((String) cmb_room_type_add.getSelectedItem());
+            this.room.setStock(Integer.parseInt(tf_stock.getText()));
+            this.room.setAdult_price(Double.parseDouble(tf_adult_price.getText()));
+            this.room.setChild_price(Double.parseDouble(tf_child_price.getText()));
+            this.room.setBed_capacity(Integer.parseInt(tf_bed_capacity.getText()));
+            this.room.setSquare_meter(Integer.parseInt(tf_square_meter.getText()));
+            this.room.setTelevision(rbut_television.isSelected());
+            this.room.setMinibar(rbut_minibar.isSelected());
+            this.room.setGame_console(rbut_game_console.isSelected());
+            this.room.setCash_box(rbut_cashbox.isSelected());
+            this.room.setProjection(rbut_projection.isSelected());
+
+            if (room.getId() != 0) {
+                result = roomManager.update(room);
+            } else {
+                result = roomManager.save(room);
+            }
+            if (result) {
+                Helper.showMsg("done");
+            } else {
+                Helper.showMsg("error");
+            }
+        });
+
+        cmb_room_add_hotel.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
                 ComboItem selectedOtelItem = (ComboItem) cmb_room_add_hotel.getSelectedItem();
                 int selectedOtelId = selectedOtelItem.getKey();
                 ArrayList<Pension> pensions = pensionManager.getPensionByOtelId(((ComboItem) cmb_room_add_hotel.getSelectedItem()).getKey());
+                System.out.println("pansiyon: " + pensions);
                 cmb_pension_add.removeAllItems();
 
-                for(Pension pension:pensions){
+                for (Pension pension : pensions) {
                     cmb_pension_add.addItem(pension.getComboItem());
                 }
 
                 ArrayList<Season> seasons = seasonManager.getSeasonsByOtelId(((ComboItem) cmb_room_add_hotel.getSelectedItem()).getKey());
+                System.out.println("sezonlar: " + seasons);
                 cmb_season_add.removeAllItems();
                 for (Season season : seasons) {
                     cmb_season_add.addItem(season.getComboItem());
@@ -80,52 +125,9 @@ public class UpdateRoomGUI extends Layout {
 
             }
         });
-        btn_save_add_room_menu.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
 
 
-                JTextField[] selectedRoomList = new JTextField[]{tf_adult_price, tf_child_price, tf_bed_capacity, tf_bed_capacity, tf_square_meter};
 
-                if (Helper.isFieldListEmpty(selectedRoomList)) {
-                    Helper.showMsg("fill");
-                } else {
-
-                }
-                boolean result = false;
-                    
-                ComboItem selectedHotel = (ComboItem) cmb_room_add_hotel.getSelectedItem();
-                ComboItem selectedPension = (ComboItem) cmb_pension_add.getSelectedItem();
-                ComboItem selectedSeason=(ComboItem) cmb_season_add.getSelectedItem();
-                room.setSeason_id(selectedSeason.getKey());
-                room.setPension_id(selectedPension.getKey());
-                room.setHotel_id(selectedHotel.getKey());
-                room.setType((String) cmb_room_type_add.getSelectedItem());
-                room.setStock(Integer.parseInt(tf_stock.getText()));
-                room.setAdult_price(Double.parseDouble(tf_adult_price.getText()));
-                room.setChild_price(Double.parseDouble(tf_child_price.getText()));
-                room.setBed_capacity(Integer.parseInt(tf_bed_capacity.getText()));
-                room.setSquare_meter(Integer.parseInt(tf_square_meter.getText()));
-                room.setTelevision(rbut_television.isSelected());
-                room.setMinibar(rbut_minibar.isSelected());
-                room.setGame_console(rbut_game_console.isSelected());
-                room.setCash_box(rbut_cashbox.isSelected());
-                room.setProjection(rbut_projection.isSelected());
-
-                if(room.getId()!=0){
-                    //result = roomManager.update(room);
-                }
-                if(result){
-                    Helper.showMsg("done");
-                    /*employeeGUI.loadReservationTable();*/
-
-                    dispose();
-                }else{
-                    Helper.showMsg("error");
-                }
-            }
-
-        });
     }
 
 }

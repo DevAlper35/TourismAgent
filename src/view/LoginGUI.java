@@ -5,6 +5,8 @@ import core.Helper;
 import entity.User;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class LoginGUI extends Layout{
     private JPanel wrapper;
@@ -19,7 +21,7 @@ public class LoginGUI extends Layout{
 
     public LoginGUI(){
         this.add(wrapper);
-        this.guiInitilaze(400,400);
+        this.guiInitilaze(450,450);
         this.userManager = new UserManager();
 
 

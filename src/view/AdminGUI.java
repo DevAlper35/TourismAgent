@@ -40,17 +40,19 @@ public class AdminGUI extends Layout {
 
 
     public AdminGUI(User user) {
+        this.user_menu = new JPopupMenu();
         this.col_user = col_user;
         this.userManager = new UserManager();
         this.add(wrapper);
-        this.guiInitilaze(1000, 400);
+        this.guiInitilaze(1000, 500);
         this.user = user;
         if (user == null) {
             dispose();
+
         }
 
 
-        this.lbl_welcome.setText("Hoşgeldiniz : " + this.user.getUsername());
+        this.lbl_welcome.setText("Welcome : " + this.user.getUsername());
 
         loadUserTable(null);
         tableRowSelect(tbl_user);
@@ -100,7 +102,7 @@ public class AdminGUI extends Layout {
                 }
             }
         });
-        DELETEButton.addActionListener(new ActionListener() {    // BUTON İLE DELETE İŞLEMİ DENİYORUM.
+        DELETEButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(Helper.confirm("sure")){
@@ -125,6 +127,10 @@ public class AdminGUI extends Layout {
         tableRowSelect(tbl_user);
 
         this.btn_new_user.addActionListener(e -> {
+            this.tf_username.setEnabled(true);
+            this.tf_pass.setEnabled(true);
+            this.cmb_user_role.setEnabled(true);
+            this.btn_add.setEnabled(true);
             this.tf_username.setText(null);
             this.tf_pass.setText(null);
             this.cmb_user_role.setSelectedItem("ADMIN");
@@ -134,8 +140,8 @@ public class AdminGUI extends Layout {
         });
 
 //
-        this.user_menu = new JPopupMenu();
-        this.user_menu.add("Güncelle").addActionListener(e -> {
+
+        this.user_menu.add("Update").addActionListener(e -> {
             int selectUserId = this.getTableSelectedRow(tbl_user,0);
             User userUpdate = this.userManager.getById(selectUserId);
             this.tf_username.setText(userUpdate.getUsername());
@@ -145,11 +151,13 @@ public class AdminGUI extends Layout {
             setUserUpdated(userUpdate);
         });
         tbl_user.setComponentPopupMenu(user_menu);
+
+
         btn_clear_user.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                cmb_users.setSelectedItem(null); // Comboboxdaki seçeneği boş bırakır
-                loadUserTable(null); // Filtrelemeyi iptal eder
+               cmb_users.setSelectedItem(null);
+               loadUserTable(null);
             }
         });
     }
@@ -180,8 +188,11 @@ public class AdminGUI extends Layout {
     }
     private User getUserUpdated (){
         return user;
+
     }
-    private void setUserUpdated (User user){
+    private void setUserUpdated (User user) {
         this.user = user;
     }
+
 }
+

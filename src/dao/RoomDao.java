@@ -111,6 +111,33 @@ public class RoomDao {
         return true;
     }
 
+    public ArrayList<Room> selectByQuery(String query){
+        ArrayList<Room> roomList = new ArrayList<>();
+        try {
+            ResultSet rs = this.connection.createStatement().executeQuery(query);
+            while (rs.next()){
+                roomList.add(this.match(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return roomList;
+    }
+
+    public boolean updateStock(Room room){
+        String query = "UPDATE public.room SET stock = ? WHERE id = ? ";
+        try {
+            PreparedStatement pr = this.connection.prepareStatement(query);
+            pr.setInt(1, room.getStock());
+            pr.setInt(2,room.getId());
+
+            pr.executeUpdate();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return true;
+    }
+
     public boolean delete(int hotel_id) {
         try {
             String query = "DELETE FROM public.room WHERE id = ?";
@@ -122,6 +149,8 @@ public class RoomDao {
         }
         return true;
     }
+
+
     public boolean update(Room room) {
         try {
             String query = "UPDATE public.room SET " +

@@ -5,6 +5,8 @@ import core.Helper;
 import entity.Hotel;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.util.ArrayList;
 
 public class HotelAddGUI extends Layout {
     private JPanel wrap;
@@ -12,7 +14,7 @@ public class HotelAddGUI extends Layout {
     private JTextField tf_name;
     private JTextField tf_mail;
     private JTextField tf_phone;
-    private JTextField tf_address;
+    private JTextField tf_adress;
     private JPanel pnl_left;
     private JRadioButton rbut_carpark;
     private JRadioButton rbut_wifi;
@@ -22,29 +24,27 @@ public class HotelAddGUI extends Layout {
     private JRadioButton rbut_spa;
     private JRadioButton rbut_roomservices;
     private JButton btn_save_add_menu;
-    private JComboBox cmb_star;
-
+    private JComboBox tf_star;
     private Hotel hotel;
     private HotelManager hotelManager;
 
 
 
-    public HotelAddGUI(Hotel byId) {
+    public HotelAddGUI() {
         this.hotelManager = new HotelManager();
         this.hotel = new Hotel();
         this.add(wrap);
         this.guiInitilaze(500, 500);
-        if(this.hotel.getId() != 0){
+        if(this.hotel.getId() != 0) {
             this.tf_name.setText(this.hotel.getName());
             this.tf_mail.setText(this.hotel.getMail());
             this.tf_phone.setText(this.hotel.getPhone());
-            this.tf_address.setText(this.hotel.getAddress());
-            this.cmb_star.setSelectedItem(this.hotel.getStar());
+            this.tf_adress.setText(this.hotel.getAddress());
+            this.tf_star.setSelectedItem(this.hotel.getStar());
         }
-
-
         btn_save_add_menu.addActionListener(e -> {
-            JTextField[] checkFieldList = {this.tf_name, this.tf_mail, this.tf_phone, this.tf_address,};
+
+            JTextField[] checkFieldList = {this.tf_name, this.tf_mail, this.tf_phone, this.tf_adress};
 
             if (Helper.isFieldListEmpty(checkFieldList)) {
                 Helper.showMsg("fill");
@@ -54,8 +54,8 @@ public class HotelAddGUI extends Layout {
                 this.hotel.setName(this.tf_name.getText());
                 this.hotel.setMail(this.tf_mail.getText());
                 this.hotel.setPhone(this.tf_phone.getText());
-                this.hotel.setAddress(this.tf_address.getText());
-                this.hotel.setStar((String) this.cmb_star.getSelectedItem());
+                this.hotel.setAddress(this.tf_adress.getText());
+                this.hotel.setStar((String)this.tf_star.getSelectedItem());
                 this.hotel.setCar_park(this.rbut_carpark.isSelected());
                 this.hotel.setWifi(this.rbut_wifi.isSelected());
                 this.hotel.setPool(this.rbut_swim.isSelected());
@@ -74,6 +74,9 @@ public class HotelAddGUI extends Layout {
                 }
             }
         });
-
     }
 }
+
+
+
+
