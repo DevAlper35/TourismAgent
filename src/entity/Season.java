@@ -12,6 +12,8 @@ public class Season {
     private LocalDate finish_date;
     private String season_type;
 
+
+    // Parametreli kurucu metot
     public Season(int id, int hotel_id, String start_date, String finish_date,String season_type) {
         this.id = id;
         this.hotel_id = hotel_id;
@@ -28,8 +30,13 @@ public class Season {
         this.season_type = season_type;
     }
 
+    // Boş kurucu metot
     public Season() {
     }
+
+
+    // Getter ve Setter metotları
+
 
     public int getId() {
         return id;

@@ -16,9 +16,13 @@ public class Reservation {
     private int adult_count;
     private int child_count;
 
+
+    // Boş kurucu metot
     public Reservation() {
     }
 
+
+    // Parametreli kurucu metot
     public Reservation(int id, int room_id, LocalDate check_in_date, LocalDate check_out_date, double total_price, int guest_count, String guest_name, String guess_citizen_id, String guess_mail,String guess_phone) {
         this.id = id;
         this.room_id = room_id;
@@ -31,6 +35,10 @@ public class Reservation {
         this.guess_mail = guess_mail;
         this.guess_phone = guess_phone;
     }
+
+
+    // Getter ve Setter metotları
+
 
     public int getAdult_count() {
         return adult_count;

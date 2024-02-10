@@ -8,6 +8,7 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+// Rezervasyon veritabanı işlemlerini yapan sınıf
 public class ReservationDao {
 
     private final Connection connection;
@@ -16,6 +17,7 @@ public class ReservationDao {
         this.connection = Database.getInstance();
     }
 
+    // Belirli bir otel ID'sine sahip rezervasyonları getiren metot
     public ArrayList<Reservation> getReservationByOtelId(int otelId) {
         ArrayList<Reservation> reservations = new ArrayList<>();
         String query = "SELECT * FROM public.reservation WHERE room_id = ?";
@@ -35,6 +37,7 @@ public class ReservationDao {
         return reservations;
     }
 
+    // Belirli bir ID'ye sahip rezervasyonu getiren metot
     public Reservation getByID(int id) {
         Reservation obj = null;
         String query = "SELECT * FROM public.reservation WHERE id = ?";
@@ -52,6 +55,7 @@ public class ReservationDao {
     }
 
 
+    // ResultSet'ten Reservation nesnesine eşleme yapan yardımcı metot
     public Reservation match(ResultSet rs) throws SQLException {
         Reservation obj = new Reservation();
         obj.setId(rs.getInt("id"));
@@ -66,6 +70,8 @@ public class ReservationDao {
         obj.setCheck_out_date(LocalDate.parse(rs.getString("check_out_date")));
         return obj;
     }
+
+    // Tüm rezervasyonları getiren metot
     public ArrayList<Reservation> findAll() {
         ArrayList<Reservation> resList = new ArrayList<>();
         String sql = "SELECT * FROM public.reservation";
@@ -80,6 +86,8 @@ public class ReservationDao {
         }
         return resList;
     }
+
+    // Rezervasyon ekleyen metot
     public boolean save(Reservation reservation){
         String query = "INSERT INTO public.reservation"+
                 "("+
@@ -114,7 +122,7 @@ public class ReservationDao {
         return true;
     }
 
-
+    // Rezervasyon silen metot
     public boolean delete(int hotel_id){
         try{
             String query = "DELETE FROM public.reservation WHERE id = ?";
@@ -126,10 +134,13 @@ public class ReservationDao {
         }
         return true;
     }
+
+    // Belirli bir rezervasyon ID'sine sahip rezervasyonları getiren metot
     public ArrayList<Reservation> getByListReservationId(int id){
         return this.selectByQuery("SELECT * FROM public.reservation WHERE id="+id);
     }
 
+    // Belirli bir sorgu ile rezervasyonları getiren metot
     public ArrayList<Reservation> selectByQuery(String query){//hazır bir SQL sorgu metodu oluşturduk.
         ArrayList<Reservation> resList=new ArrayList<>();
         try {
@@ -145,6 +156,7 @@ public class ReservationDao {
     }
 
 
+    // Rezervasyonu güncelleyen metot
     public boolean update (Reservation reservation){
         try{
             String query = "UPDATE public.reservation SET " +

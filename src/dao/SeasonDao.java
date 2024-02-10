@@ -8,14 +8,16 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+// Sezon veritabanı işlemlerini yapan sınıf
 public class SeasonDao {
     private final Connection connection;
 
+    // Yapılandırıcı metot
     public SeasonDao() {
         this.connection = Database.getInstance();
     }
 
-
+    // Belirli bir otelin sezonlarını getiren metot
     public ArrayList<Season> getSeasonsByOtelId(int otelId) {
         ArrayList<Season> seasons = new ArrayList<>();
         String query = "SELECT * FROM public.hotel_season WHERE hotel_id = ?";
@@ -35,6 +37,7 @@ public class SeasonDao {
         return seasons;
     }
 
+    // Belirli bir ID'ye sahip sezonu getiren metot
     public Season getByID(int id) {
         Season obj = null;
         String query = "SELECT * FROM public.hotel_season WHERE id = ? ";
@@ -51,6 +54,7 @@ public class SeasonDao {
         return obj;
     }
 
+    // ResultSet'ten Season nesnesine eşleme yapan yardımcı metot
     public Season match(ResultSet rs) throws SQLException {
         Season obj = new Season();
         obj.setId(rs.getInt("id"));
@@ -61,6 +65,8 @@ public class SeasonDao {
 
         return obj;
     }
+
+    // Tüm sezonları getiren metot
     public ArrayList<Season> findAll() {
         ArrayList<Season> seasonList = new ArrayList<>();
         String sql = "SELECT * FROM public.hotel_season";
@@ -75,6 +81,8 @@ public class SeasonDao {
         }
         return seasonList;
     }
+
+    // Sezon ekleyen / kaydeden metot
     public boolean save(Season season){
         String query = "INSERT INTO public.hotel_season"+
                 "("+
@@ -94,6 +102,8 @@ public class SeasonDao {
         }
         return true;
     }
+
+    // Sezon silen metot
     public boolean delete(int hotel_id){
         try{
             String query = "DELETE FROM public.hotel_season WHERE id = ?";

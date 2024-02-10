@@ -10,18 +10,23 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-public class RoomManager {
-    RoomDao roomDao = new RoomDao();
 
+// Oda işlemlerini yöneten sınıf
+public class RoomManager {
+    RoomDao roomDao = new RoomDao(); // Oda veritabanı erişim nesnesi
+
+    // Belirli bir ID'ye sahip odayı getiren metot
     public Room getById(int id){return this.roomDao.getByID(id);}
+
+    // Tüm odaları getiren metot
     public ArrayList<Room> findAll(){return this.roomDao.findAll();}
 
+    // Tablo için gerekli bilgileri sağlayan metot
     public ArrayList<Object[]> getForTable(int size,ArrayList<Room> rooms){
         ArrayList<Object[]> roomList = new ArrayList<>();
         for (Room obj : rooms){
             int i = 0;
             Object[] rowObject = new Object[size];
-
             rowObject[i++] = obj.getId();
             rowObject[i++] = obj.getHotel_id();
             rowObject[i++] = obj.getPension_id();
@@ -41,6 +46,8 @@ public class RoomManager {
         }
         return roomList;
     }
+
+    // Oda kaydını veritabanına ekleyen metot
     public boolean save(Room room){
         if(room.getId()!=0){
             Helper.showMsg("error");
@@ -48,6 +55,7 @@ public class RoomManager {
         return this.roomDao.save(room);
     }
 
+    // Oda stokunu güncelleyen metot
     public boolean updateStock(Room room){
         if(this.getById(room.getId())== null){
             return false;
@@ -55,6 +63,7 @@ public class RoomManager {
         return this.roomDao.updateStock(room);
     }
 
+    // Belirli bir ID'ye sahip odayı silen metot
     public boolean delete(int id){
         if(this.getById(id) == null){
             Helper.showMsg(id + " ID kayıtlı  bulunamadı");
@@ -62,6 +71,8 @@ public class RoomManager {
         }
         return this.roomDao.delete(id);
     }
+
+    // Oda bilgilerini güncelleyen metot
     public boolean update(Room room) {
         if (this.getById(room.getId()) == null) {
             Helper.showMsg(room.getId()+ " ID kayıtlı  bulunamadı");
@@ -70,6 +81,8 @@ public class RoomManager {
         return this.roomDao.update(room);
     }
 
+
+    // Arama kriterlerine göre odaları filtreleyen metot
     public ArrayList<Room> searchForTable(String hotelName, String cityAdress,String checkinDate,String checkoutDate, String adultNum, String childNum){
         String query = "SELECT * from public.room r " +
                 "LEFT JOIN public.hotel h ON r.hotel_id = h.id " +

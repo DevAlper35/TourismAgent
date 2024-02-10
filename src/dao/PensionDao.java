@@ -12,13 +12,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+// Pension veritabanı işlemlerini yapan sınıf
 public class PensionDao {
     private final Connection connection;
 
+    // Yapılandırıcı metot
     public PensionDao() {
         this.connection = Database.getInstance();
     }
 
+    // Belirli bir otel ID'sine sahip Pension getiren metot
     public ArrayList<Pension> getPensionByOtelId(int id) {
         ArrayList<Pension> pensions = new ArrayList<>();
         String query = "SELECT * FROM public.hotel_pension WHERE hotel_id = ?";
@@ -38,7 +41,7 @@ public class PensionDao {
         return pensions;
     }
 
-
+    // Belirli bir ID'ye sahip Pension getiren metot
     public Pension getByID(int id) {
         Pension obj = null;
         String query = "SELECT * FROM public.hotel_pension WHERE id = ? ";
@@ -54,6 +57,8 @@ public class PensionDao {
         }
         return obj;
     }
+
+    // ResultSet'ten Pension nesnesine eşleme yapan yardımcı metot
     public Pension match(ResultSet rs) throws SQLException {
         Pension obj = new Pension();
         obj.setId(rs.getInt("id"));
@@ -64,6 +69,7 @@ public class PensionDao {
         return obj;
     }
 
+    // Pension güncelleyen metot
     public boolean update(Pension pension) {
         try {
             String query = "UPDATE public.hotel_pension SET " +
@@ -81,6 +87,8 @@ public class PensionDao {
         }
         return true;
     }
+
+    // Tüm Pension getiren metot
     public ArrayList<Pension> findAll() {
         ArrayList<Pension> pensionList = new ArrayList<>();
         String sql = "SELECT * FROM public.hotel_pension";
@@ -95,6 +103,8 @@ public class PensionDao {
         }
         return pensionList;
     }
+
+    // Pension ekleyen metot
     public boolean save(Pension pension){
         String query = "INSERT INTO public.hotel_pension"+
                 "("+
@@ -112,6 +122,8 @@ public class PensionDao {
         }
         return true;
     }
+
+    // Pension silen metot
     public boolean delete(int hotel_id){
         try{
             String query = "DELETE FROM public.hotel_pension WHERE id = ?";
@@ -124,6 +136,3 @@ public class PensionDao {
         return true;
     }
 }
-
-
-// EKLEME , SİLME , findbyall güncelleme hariç.

@@ -21,9 +21,13 @@ public class Room {
     private boolean projection;
     private boolean gym;
 
+
+    // Boş kurucu metot
     public Room() {
     }
 
+
+    // Parametreli kurucu metot
     public Room(int id, int hotel_id, int pension_id, int season_id, String type, int stock, double adult_price, double child_price, int bed_capacity, int square_meter, boolean television, boolean minibar, boolean game_console, boolean cash_box, boolean projection,boolean gym) {
         this.id = id;
         this.hotel_id = hotel_id;
@@ -43,6 +47,8 @@ public class Room {
         this.gym = gym;
     }
 
+
+    // Getter ve Setter metotları
     public boolean isGym() {
         return gym;
     }

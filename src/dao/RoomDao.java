@@ -12,13 +12,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+// Oda veritabanı işlemlerini yapan sınıf
 public class RoomDao {
     private final Connection connection;
 
+    // Yapılandırıcı metot
     public RoomDao() {
         this.connection = Database.getInstance();
     }
 
+    // Belirli bir ID'ye sahip odanın bilgilerini getiren metot
     public Room getByID(int id) {
         Room obj = null;
         String query = "SELECT * FROM public.room WHERE id = ? ";
@@ -35,6 +38,7 @@ public class RoomDao {
         return obj;
     }
 
+    // ResultSet'ten Room nesnesine eşleme yapan yardımcı metot
     public Room match(ResultSet rs) throws SQLException {
         Room obj = new Room();
         obj.setId(rs.getInt("id"));
@@ -54,6 +58,8 @@ public class RoomDao {
         return obj;
     }
 
+
+    // Tüm odaları getiren metot
     public ArrayList<Room> findAll() {
         ArrayList<Room> roomList = new ArrayList<>();
         String sql = "SELECT * FROM public.room";
@@ -69,6 +75,7 @@ public class RoomDao {
         return roomList;
     }
 
+    // Oda ekleyen metot
     public boolean save(Room room) {
         String query = "INSERT INTO public.room" +
                 "(" +
@@ -111,6 +118,7 @@ public class RoomDao {
         return true;
     }
 
+    // Belirli bir sorgu ile odaları getiren metot
     public ArrayList<Room> selectByQuery(String query){
         ArrayList<Room> roomList = new ArrayList<>();
         try {
@@ -124,6 +132,7 @@ public class RoomDao {
         return roomList;
     }
 
+    // Stok bilgisini güncelleyen metot
     public boolean updateStock(Room room){
         String query = "UPDATE public.room SET stock = ? WHERE id = ? ";
         try {
@@ -138,6 +147,7 @@ public class RoomDao {
         return true;
     }
 
+    // Oda silen metot
     public boolean delete(int hotel_id) {
         try {
             String query = "DELETE FROM public.room WHERE id = ?";
@@ -151,6 +161,7 @@ public class RoomDao {
     }
 
 
+    // Oda bilgilerini güncelleyen metot
     public boolean update(Room room) {
         try {
             String query = "UPDATE public.room SET " +

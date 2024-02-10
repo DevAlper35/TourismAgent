@@ -7,14 +7,19 @@ public class Pension {
     private String pension_type;
     private int hotel_id;
 
+    // Boş kurucu metot
     public Pension() {
     }
 
+    // Parametreli kurucu metot
     public Pension(int id, String pension_type, int hotel_id) {
         this.id = id;
         this.pension_type = pension_type;
         this.hotel_id = hotel_id;
     }
+
+    // Getter ve Setter metotları
+
 
     public int getId() {
         return id;

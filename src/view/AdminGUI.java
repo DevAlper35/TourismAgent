@@ -38,25 +38,30 @@ public class AdminGUI extends Layout {
     private JPopupMenu user_menu;
 
 
-
+    // Kurucu metot
     public AdminGUI(User user) {
+        // Değişkenleri başlat
         this.user_menu = new JPopupMenu();
         this.col_user = col_user;
         this.userManager = new UserManager();
         this.add(wrapper);
         this.guiInitilaze(1000, 500);
         this.user = user;
+
+        // Kullanıcı girişi yoksa pencereyi kapat
         if (user == null) {
             dispose();
 
         }
 
-
+        // Hoş geldiniz etiketini güncelle
         this.lbl_welcome.setText("Welcome : " + this.user.getUsername());
 
+        // Kullanıcı tablosunu yükle ve satır seçme olayı ekle
         loadUserTable(null);
         tableRowSelect(tbl_user);
 
+        // Çıkış butonuna dinleyici ekle
         LOGOUTButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -65,6 +70,7 @@ public class AdminGUI extends Layout {
             }
         });
 
+        // Kullanıcı ekleme butonuna dinleyici ekle
         btn_add.addActionListener(new ActionListener() {
 
 
@@ -102,6 +108,8 @@ public class AdminGUI extends Layout {
                 }
             }
         });
+
+        // Kullanıcı silme butonuna dinleyici ekle
         DELETEButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -117,6 +125,8 @@ public class AdminGUI extends Layout {
                 }
             }
         });
+
+        // Kullanıcı arama butonuna dinleyici ekle
         btn_search_user.addActionListener(e -> {
             String selectedUser= (String) this.cmb_users.getSelectedItem();
             ArrayList<User> userListBySearch=this.userManager.searchForTable(selectedUser);
@@ -126,6 +136,7 @@ public class AdminGUI extends Layout {
         });
         tableRowSelect(tbl_user);
 
+        // Yeni kullanıcı butonuna dinleyici ekle
         this.btn_new_user.addActionListener(e -> {
             this.tf_username.setEnabled(true);
             this.tf_pass.setEnabled(true);
@@ -139,9 +150,12 @@ public class AdminGUI extends Layout {
 
         });
 
-//
-
+        // Kullanıcı güncelleme seçeneğini içeren sağ tıklama menüsü ekle
         this.user_menu.add("Update").addActionListener(e -> {
+            this.tf_username.setEnabled(true);
+            this.tf_pass.setEnabled(true);
+            this.cmb_user_role.setEnabled(true);
+            this.btn_add.setEnabled(true);
             int selectUserId = this.getTableSelectedRow(tbl_user,0);
             User userUpdate = this.userManager.getById(selectUserId);
             this.tf_username.setText(userUpdate.getUsername());
@@ -152,7 +166,7 @@ public class AdminGUI extends Layout {
         });
         tbl_user.setComponentPopupMenu(user_menu);
 
-
+        // Kullanıcı tablosunu temizleme butonuna dinleyici ekle
         btn_clear_user.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -162,6 +176,7 @@ public class AdminGUI extends Layout {
         });
     }
 
+    // Kullanıcı tablosunu yükleme metodu
     public void loadUserTable(ArrayList<Object[]> userList) {
 
         this.col_user = new Object[] {"ID", "Username", "Password", "Role"};
@@ -169,8 +184,9 @@ public class AdminGUI extends Layout {
             userList=this.userManager.getForTable(this.col_user.length,this.userManager.findAll());
         }
         createTable(this.tmdl_user,this.tbl_user,col_user,userList);
-
     }
+
+    // Tablodaki satırı seçme olayı
     public void tableRowSelect(JTable table){
         table.addMouseListener(new MouseAdapter() {
 
@@ -182,6 +198,7 @@ public class AdminGUI extends Layout {
             }
         });
     }
+
 
     private void createUIComponents() {
         // TODO: place custom component creation code here

@@ -20,9 +20,11 @@ public class Hotel {
     private Pension pension;
     private HotelManager hotelManager;
 
+    // Boş kurucu metot
     public Hotel() {
     }
 
+    // Parametreli kurucu metot
     public Hotel(int id, String name, String address, String mail, String phone, String star, boolean wifi, boolean car_park, boolean pool, boolean fitness, boolean concierge, boolean spa, boolean room_service) {
         HotelManager hotelManager = new HotelManager();
         Pension pension = new Pension();
@@ -40,6 +42,8 @@ public class Hotel {
         this.spa = spa;
         this.room_service = room_service;
     }
+
+    // Getter ve Setter metotları
 
     public int getId() {
         return id;

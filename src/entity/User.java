@@ -6,10 +6,14 @@ public class User {
     private String password;
     private String role;
 
+
+    // Boş kurucu metot
     public User() {
 
     }
 
+
+    // Parametreli kurucu metot
     public User(int id, String username, String pass, String role) {
         this.id = id;
         this.username = username;
@@ -17,6 +21,8 @@ public class User {
         this.role = role;
     }
 
+
+    // Getter ve Setter metotları
     public int getId() {
         return id;
     }

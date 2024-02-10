@@ -11,13 +11,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+// Kullanıcı veritabanı işlemlerini yapan sınıf
 public class UserDao {
     private final Connection con;
 
+    // Yapılandırıcı metot
     public UserDao() {
         this.con = Database.getInstance();
     }
 
+    // Tüm kullanıcıları getiren metot
     public ArrayList<User> findAll() {
         ArrayList<User> userList = new ArrayList<>();
         String sql = "SELECT * FROM public.user";
@@ -33,6 +36,7 @@ public class UserDao {
         return userList;
     }
 
+    // Kullanıcı adı ve şifresine göre kullanıcıyı bulan metot
     public User findByLogin(String username, String password) {
         User obj = null;
         String query = "SELECT * FROM public.user WHERE user_name = ? AND user_pass = ?";
@@ -50,6 +54,7 @@ public class UserDao {
         return obj;
     }
 
+    // ResultSet'ten User nesnesine eşleme yapan yardımcı metot
     public User match(ResultSet rs) throws SQLException {
         User obj = new User();
         obj.setId(rs.getInt("user_id"));
@@ -59,7 +64,8 @@ public class UserDao {
         return obj;
     }
 
-    public boolean save(User user) { // SAVE İŞLEMİ
+    // Kullanıcı ekleyen metot
+    public boolean save(User user) {
         String query = "INSERT INTO public.user (user_name , user_pass , user_role) VALUES (?,?, ?)";
         try {
             PreparedStatement pr = con.prepareStatement(query);
@@ -77,6 +83,7 @@ public class UserDao {
 
 
 
+    // Kullanıcı silen metot
     public boolean delete(int model_id) {
         try {
             String query = "DELETE FROM public.user WHERE user_id = ?";
@@ -89,6 +96,7 @@ public class UserDao {
         return true;
     }
 
+    // Belirli bir sorguya göre kullanıcıları getiren metot
     public ArrayList<User> selectByQuery(String query) {//hazır bir SQL sorgu metodu oluşturduk.
         ArrayList<User> userList = new ArrayList<>();
         try {
@@ -103,6 +111,7 @@ public class UserDao {
         return userList;
     }
 
+    // Kullanıcı bilgilerini güncelleyen metot
     public boolean update(User user) {
         try {
             String query = "UPDATE public.user SET " +
@@ -124,6 +133,7 @@ public class UserDao {
         return true;
     }
 
+    // Belirli bir ID'ye sahip kullanıcıyı getiren metot
     public User getByID(int id) {
         User obj = null;
         String query = "SELECT * FROM public.user WHERE user_id = ?";
@@ -137,8 +147,6 @@ public class UserDao {
         }
         return obj;
     }
-
-
 }
 
 

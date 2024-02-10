@@ -6,19 +6,21 @@ import entity.User;
 
 import java.util.ArrayList;
 
+// Kullanıcı işlemlerini yöneten sınıf
 public class UserManager {
-    private final UserDao userDao;
+    private final UserDao userDao;  // Kullanıcı veritabanı erişim nesnesi
 
     public UserManager() {
         this.userDao = new UserDao();
     }
 
+    // Kullanıcı adı ve şifreye göre kullanıcıyı bulan metot
     public User findByLoging(String username, String password) {
-        // Farklı işlemler yapabiliriz ...
         return this.userDao.findByLogin(username, password);
 
     }
 
+    // Tablo için gerekli bilgileri sağlayan metot
     public ArrayList<Object[]> getForTable(int size, ArrayList<User> modelList) {
         ArrayList<Object[]> modelObjList = new ArrayList<>();
         for (User obj : modelList) {
@@ -34,10 +36,12 @@ public class UserManager {
 
     }
 
+    // Tüm kullanıcıları getiren metot
     public ArrayList<User> findAll() {
         return this.userDao.findAll();
     }
 
+    // Kullanıcı kaydını veritabanına ekleyen metot
     public boolean save(User user) {
         if (this.getById(user.getId()) != null) {
             Helper.showMsg("error");
@@ -46,6 +50,7 @@ public class UserManager {
         return this.userDao.save(user);
     }
 
+    // Kullanıcı bilgilerini güncelleyen metot
     public boolean update(User user) {
         if (this.getById(user.getId()) == null) {
             Helper.showMsg(user.getId() + "ID kayıtlı model bulunamadı");
@@ -54,9 +59,11 @@ public class UserManager {
         return this.userDao.update(user);
     }
 
+    // Belirli bir ID'ye sahip kullanıcıyı getiren metot
     public User getById(int id) {
         return this.userDao.getByID(id);
     }
+
 
     public boolean delete(int id) {  // DELETE İŞLEMİ
         if (this.getById(id) == null) {
@@ -66,6 +73,7 @@ public class UserManager {
         return this.userDao.delete(id);
     }
 
+    // Rolüne göre kullanıcıları arayan metot
     public ArrayList<User> searchForTable(String role) {
         String select = "SELECT * FROM public.user";
         ArrayList<String> whereList = new ArrayList<>();

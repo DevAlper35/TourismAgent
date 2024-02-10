@@ -11,15 +11,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+// Otel veritabanı işlemlerini yapan sınıf
 public class HotelDao {
     private final Connection connection;
 
+    // Yapılandırıcı metot
     public HotelDao() {
 
         this.connection = Database.getInstance();
     }
 
 
+    // Belirli bir ID'ye sahip oteli getiren metot
     public Hotel getByID(int id) {
         Hotel obj = null;
         String query = "SELECT * FROM public.hotel WHERE id = ? ";
@@ -36,6 +39,7 @@ public class HotelDao {
         return obj;
     }
 
+    // ResultSet'ten Hotel nesnesine eşleme yapan yardımcı metot
     public Hotel match(ResultSet rs) throws SQLException {
         Hotel obj = new Hotel();
         obj.setId(rs.getInt("id"));
@@ -55,6 +59,7 @@ public class HotelDao {
         return obj;
     }
 
+    // Tüm otelleri getiren metot
     public ArrayList<Hotel> findAll() {
         ArrayList<Hotel> hotelList = new ArrayList<>();
         String sql = "SELECT * FROM public.hotel";
@@ -71,6 +76,7 @@ public class HotelDao {
     }
 
 
+    // Otel ekleyen metot
     public boolean save(Hotel hotel) {
         String query = "INSERT INTO public.hotel " +
                 "(" +
@@ -108,6 +114,8 @@ public class HotelDao {
         }
         return true;
     }
+
+    // Otel silen metot
     public boolean delete(int model_id){
         try{
             String query = "DELETE FROM public.hotel WHERE id = ?";
@@ -119,6 +127,8 @@ public class HotelDao {
         }
         return true;
     }
+
+    // Otel güncelleyen metot
     public boolean update(Hotel hotel) {
         try {
             String query = "UPDATE public.hotel SET " +
@@ -148,6 +158,7 @@ public class HotelDao {
             pr.setBoolean(10, hotel.isConcierge());
             pr.setBoolean(11, hotel.isSpa());
             pr.setBoolean(12, hotel.isRoom_service());
+
             return pr.executeUpdate() != -1;
 
         } catch (SQLException throwables) {

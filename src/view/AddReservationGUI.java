@@ -56,14 +56,15 @@ public class AddReservationGUI extends Layout {
     private Double child_price;
 
 
-
+    // Kurucu metod
     public AddReservationGUI(Room room, String check_in_date, String check_out_date, int adult_numb, int child_numb, Reservation reservation) {
 
-
+        // GUI'yi oluştur
         this.add(wrapper);
-
         this.guiInitilaze(1000, 1000);
         this.wrapper = wrapper;
+
+        // Oda ve rezervasyon bilgilerini atama
         this.room = room;
         this.adult_price = adult_price;
         this.child_price = child_price;
@@ -86,7 +87,7 @@ public class AddReservationGUI extends Layout {
         double total_price = ((this.room.getAdult_price() * adult_numb)+ this.room.getChild_price() * child_numb) * day_count;
 
 
-
+        // GUI bileşenlerini doldur
         this.tf_res_hotel_name.setText(this.room.getHotel().getName());
         this.tf_res_city.setText(this.room.getHotel().getAddress());
         this.tf_res_star.setText(this.room.getHotel().getStar());
@@ -111,7 +112,7 @@ public class AddReservationGUI extends Layout {
         this.tf_res_total_amount.setText(String.valueOf(total_price));
         this.tf_res_total_guest_number.setText(String.valueOf(guest_count));
 
-
+        // Rezervasyon ekleme butonuna dinleyici ekle
         btn_reservation_add.addActionListener(e -> {
             JTextField[] checkfieldEmpty = {this.tf_res_guess_name,this.tf_res_guess_id_no,this.tf_res_guess_mail,this.tf_res_guess_tel_no};
             if (Helper.isFieldListEmpty(checkfieldEmpty)){
@@ -119,6 +120,7 @@ public class AddReservationGUI extends Layout {
             }else{
                 boolean result;
 
+                // Rezervasyon bilgilerini atama
                 this.reservation.setTotal_price(Double.parseDouble(this.tf_res_total_amount.getText()));
                 this.reservation.setGuest_count(Integer.parseInt(this.tf_res_total_guest_number.getText()));
                 this.reservation.setGuest_name(this.tf_res_guess_name.getText());
